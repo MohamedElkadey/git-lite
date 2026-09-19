@@ -6,13 +6,14 @@ using namespace std;
 class Blob{
     private:
         
-        static string BlobDirPath ;
+        filesystem::path blobDirPath ;
+        string pathByHash(string hash);
     public:
 
-    bool create(string );
-    bool exist();
+    string create(string filePath);
+    string blobExistByHash(string hash);
     string read();
     bool write(string);
-    Blob();
+    Blob(string);
     ~Blob();
 };

@@ -3,8 +3,11 @@
 #include "zlib.h"
 using namespace std;
 
-
 void myzlib::compressFile(ifstream& in, ofstream& out, int level) {
+    /*
+        ifstream in(file2, ios::binary);
+        ofstream out(file3,  ios::binary | ios::trunc);
+    */
     z_stream zs{};
     if (deflateInit(&zs, level) != Z_OK)
         throw runtime_error("deflateInit failed");

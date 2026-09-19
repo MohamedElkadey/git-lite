@@ -14,29 +14,26 @@ int main(){
     // gitstructure gt ;
     // gt.init();
     
-    string file1 = "/run/media/elkadey/Engineering/test git/file.ini";
+    string objectD = "/run/media/elkadey/Engineering/test git/Test";
     string file2 = "/run/media/elkadey/Engineering/test git/file2.txt";
     string file3 = "/run/media/elkadey/Engineering/test git/try.txt";
     string file4 = "/run/media/elkadey/Engineering/test git/try2.txt";
 
-    ifstream in(file2, ios::binary);
-    ofstream out(file3,  ios::binary | ios::trunc);
-    auto start2 = std::chrono::high_resolution_clock::now();
-    file fl;
-    myzlib zl;
-    cout<<fl.hashFileContent(file2)<<'\n';
-    zl.compressFile(in,out,8);
-    in.close();
-    out.close();
-    ifstream in2(file3, ios::binary);
-    ofstream out2(file4,  ios::binary | ios::trunc);
-    zl.decompressFile(in2,out2);
-    in2.close();
-    out2.close();
-    cout<<fl.hashFileContent(file4)<<'\n';
-    cout<<fl.fileSize(file2)<<'\n';
-    cout<<fl.fileSize(file4)<<'\n';
+    auto start = std::chrono::high_resolution_clock::now();
+    Blob blb(objectD);
+    cout<< blb.create(file2)<<'\n';
+    auto end = std::chrono::high_resolution_clock::now();
 
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+        end - start
+    );
+    std::cout << "Function took: "
+              << duration.count()
+              << " microseconds\n";
+
+              
+    auto start2 = std::chrono::high_resolution_clock::now();
+    cout<< blb.create(file4)<<'\n';
     auto end2 = std::chrono::high_resolution_clock::now();
 
     auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(
@@ -45,7 +42,6 @@ int main(){
     std::cout << "Function took: "
               << duration2.count()
               << " microseconds\n";
-
     return 0;
 }
 

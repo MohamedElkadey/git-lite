@@ -1,6 +1,5 @@
 #pragma once
 #include <bits/stdc++.h>
-
 using namespace std;
 namespace fs = filesystem;
 /*
@@ -43,19 +42,14 @@ private:
     };
     vector<Edit>edits ;
 
-
+    void readFile(fs::path);
     bool createFile(fs::path);
-    string ClusterFrom(string , string );
-    bool checkClusterInLine(string , string );
     bool createPath(fs::path );
 
 public:
     INIFile();
     bool init(string);
-    Read getCluster(string);
-    string readByChunck();
     ~INIFile();
-    Key readChunk(ifstream&);
 };
 
 INIFile::INIFile(){}
@@ -64,9 +58,10 @@ bool INIFile::init(string filePath){
     fs::path fp = fs::path(filePath); 
     if(!fs::exists(fp)){
         if(!createFile(fp)){
-            cout<<"faild to create file\n";
             return false;
         }
+    }else{
+        // set filePath from file
     }
     this->filePath = fp;
     return true;
@@ -77,7 +72,8 @@ bool INIFile::createFile(fs::path path){
         return true;
 
     if(path.parent_path().empty()){
-        if(!createPath(path.parent_path()))
+        dir dd;
+        if(!dd.createDirPath(path.parent_path().string()) )
             return false;
     }
     fstream file(path);
@@ -85,102 +81,12 @@ bool INIFile::createFile(fs::path path){
     return file.is_open();
 }
 
-bool INIFile::createPath(fs::path path){
-    if(fs::exists(path))
-        return true;
-    
-    if(path.parent_path().empty()){
-        if(!createPath(path.parent_path())){
-            return false;
-        }
-    }
-    return fs::create_directory(path);
-}
 
 INIFile::~INIFile(){}
 
-// INIFile::Read INIFile::getCluster(string Cluster){
-//     ifstream file;
-//     file.open(filePath.string(),ios::binary);
-//     if (!file.is_open())
-//         return {};
-
-//     string result;
-//     uint32_t st;
-//     uint32_t end;
-//     while (file)
-//     {
-//         Read chunk = readChunk(file);
-//         if(chunk.data.empty())
-//             break;
-//         result += ClusterFrom(chunk.data.data() , Cluster);
-//     }
-//     return result;
-// }
-
-string INIFile::ClusterFrom(string content, string Cluster){
-    string line,result ="";
-    uint32_t st,ed;
-    bool readed = 0,aim =0;
-    istringstream stream(content);
-    while (getline(stream , line))
-    {
-        if(!line.empty() && line[0] == '['){
-            if(aim){
-                readed = true;
-                break;
-            }
-            aim = checkClusterInLine(Cluster,line);
-            continue;
-        }
-        if(aim && !readed){
-            result += line + '\n';
-        }
-        if(readed)
-            break;
-    }
-    return result;
+void INIFile::readFile(fs::path){
+    uint32_t line = 0 ;
 }
-
-bool INIFile::checkClusterInLine(string Cluster , string line){
-    string cl= "";
-    for(unsigned int i = 1 ;i<line.length() ; i++){
-        if(line[i] != ']'){
-            cl += line[i];
-        }
-    }
-    return cl == Cluster;
-}
-
-string INIFile::readByChunck(){
-    ifstream file;
-    file.open(filePath.string(),ios::binary);
-    if (!file.is_open())
-        return {};
-
-    string result;
-    while(file){
-        Key reads = readChunk(file);
-        if(reads.Posetion.length == 0)
-            break;
-        result += reads.name;
-    }
-
-    return result;
-}
-
-INIFile::Key INIFile::readChunk(ifstream& file){
-    vector<char> buffer(BUFFER_SIZE);
-
-    uint32_t start = static_cast<uint32_t>(file.tellg());
-
-    file.read(buffer.data(), BUFFER_SIZE);
-
-    uint32_t bytesRead = static_cast<uint32_t>(file.gcount());
-
-    return Key{ Field{start, bytesRead}, string(buffer.data(), bytesRead)};
-}
-
 
 /*
 read file by chunk with return start and end byte
@@ -191,4 +97,12 @@ sort edit with start -> function to overlap to make edit vector
 
 apply edit -> read the file and write the new things in temp file
 
+
+read line by line 
+found [cluster] -> call cluster function 
+    go in lines and find children -> by call function line
+        line get info from line 
+    add each child if there 
+when found new cluster add old one to read 
+and call cluster again untill finish 
 */

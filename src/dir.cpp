@@ -42,7 +42,6 @@ string dir::currentDir(){
 bool dir::createDir(string path ){
     fs::path  directory =  path ;
     if(this->dirExist(directory.string())){
-        cout<<path + " is exits";
         return true;
     }
     try
