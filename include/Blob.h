@@ -12,8 +12,7 @@ class Blob{
 
     string create(string filePath);
     string blobExistByHash(string hash);
-    string read();
-    bool write(string);
+    bool getFromBlob(string hash , string filePath  );
     Blob(string);
     ~Blob();
 };

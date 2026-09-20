@@ -26,18 +26,15 @@ private:
         const AssetInfo* children;
         size_t childrenCount;
     };
-    static constexpr AssetInfo blobAssets[] = {
-        {Asset::Blob, "something", AssetType::File, nullptr, 0},
-        {Asset::Blob, "else", AssetType::File, nullptr, 0}
-    };
-    static constexpr AssetInfo TreeAssets[] = {
-        {Asset::Blob, "something", AssetType::File, nullptr, 0},
-        {Asset::Blob, "else", AssetType::File, nullptr, 0}
-    };
+    // static constexpr AssetInfo blobAssets[] = {
+    //     {Asset::Blob, "something", AssetType::File, nullptr, 0},
+    //     {Asset::Blob, "else", AssetType::File, nullptr, 0}
+    // };
+    
     static constexpr array<AssetInfo , 5> assets= {{
-        {Asset::Blob , "blob", AssetType::Directory,blobAssets ,size(blobAssets)},
-        {Asset::Tree , "tree", AssetType::Directory,TreeAssets,size(TreeAssets)},
-        {Asset::Index , "index.json", AssetType::File,nullptr, 0},
+        {Asset::Blob , "object", AssetType::Directory,nullptr ,0},
+        {Asset::Tree , "DB", AssetType::Directory,nullptr,0},
+        {Asset::Index , "index.db", AssetType::File,nullptr, 0},
         {Asset::Ignore , "ignore.txt", AssetType::File ,nullptr,0},
         {Asset::Config , "Config.ini", AssetType::File ,nullptr,0}
     }};

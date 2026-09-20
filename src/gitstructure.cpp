@@ -1,4 +1,6 @@
 #include "gitstructure.h"
+#include "config.h"
+#include "path_utils.h"
 #include "dir.h"
 #include "file.h"
 #include <bits/stdc++.h>
@@ -24,8 +26,13 @@ void gitstructure::init(){
         int problems = checkasset(info.asset);
 
         if (problems) {
-            cout << info.name << " has problems\n";
             createasset(info.asset);
+            if(info.childrenCount){
+                for (size_t i = 0; i < info.childrenCount; ++i){
+                    const auto& child = info.children[i];
+                    createasset(child.asset);
+                }
+            }
         }
     }
 }
@@ -61,13 +68,25 @@ bool gitstructure::createasset(Asset asset)
         return dd.createDirPath(path);
     }
     if(info.asset == Asset::Config){
-        
-        // if(!Config::setRootPath(this->path , getDir() +'/'+info.name))
-        //     return false;
+        if(!config::init(path)){
+            cout << "Failed to init config: " << path << "\n";
+            return false;
+        }
+        if(config::getMasterPath().empty()){
+            
+            if(!config::setMasterPath(this->path)){
+                cout << "Failed to set master path in config\n";
+                return false;
+            }
+        }
     }
 
-    file f;
-    return f.create(path);
+    if(info.type == AssetType::File){
+        file f;
+        return f.create(path);
+    }
+
+    return false;
 }
 
 string gitstructure::getPath(Asset asset) const{
@@ -94,9 +113,10 @@ int gitstructure::checkasset(Asset asset)
 
     if (info.type == AssetType::Directory) {
         return !dd.dirExist(path);
+    }else if(info.type == AssetType::File){
+        return !dd.fileExist(path) ;
     }
 
-    return !dd.fileExist(path) ;
 }
 
 int gitstructure::setbit(int value, int pos) {

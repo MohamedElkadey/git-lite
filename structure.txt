@@ -34,3 +34,9 @@ haveStructureProblems return a map of structure errors if there
     remove git 
 
     
+config file contain the path of master dir 
+want global function that cut the master path of any path and a function that add the master 
+tree -> DB 
+we have master DB that have the current commit 
+save the commits in DB dir hashed 
+have file tree have the order of DB

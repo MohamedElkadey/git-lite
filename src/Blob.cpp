@@ -27,6 +27,10 @@ chechBlobThere by hash
     if exist of file hash 
 getBlob by hash 
     return it from object if there 
+getFromBlob from hash 
+    chech if file exist 
+    decompress it in file path 
+
 */
 
 
@@ -64,5 +68,19 @@ string Blob::blobExistByHash(string hash){
     if(fl.checkFileExist(pth))
         return pth;
     return "";
+}
+
+bool Blob::getFromBlob(string hash , string filePath ){
+    myzlib zl;
+    string pth = blobExistByHash(hash);
+    if(pth.empty())
+        return false;
+
+    ifstream in(pth, ios::binary);
+    ofstream out(filePath,  ios::binary | ios::trunc);
+    zl.decompressFile(in,out);
+    in.close();
+    out.close();
+    return true;
 }
 
