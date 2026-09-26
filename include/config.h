@@ -8,4 +8,7 @@ namespace config {
     bool setMasterPath(const std::string &masterPath);
     bool setmultiValues(vector<string[3]> CKV );
     bool setConfig(string cluster , string prameter , string value);
+    string getValue(string cluster , string prameter);
+    bool deletePrameter(string cluster , string prameter);
+
 }

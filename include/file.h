@@ -15,6 +15,7 @@ class file{
     bool writeInFile(string , const string&,bool  );
     bool copyContentFromFileToFile(string,string );
     uintmax_t fileSize(string);
+    bool clearFile(string path);
     file();
     ~file();
 };

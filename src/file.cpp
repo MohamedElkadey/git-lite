@@ -10,8 +10,6 @@ namespace fs = filesystem;
 bool file::create(string path){
     fs::path fpath =  fs::path(path);
     
-    if(checkFileExist(fpath))
-        return true;
     dir dd;
     if (!dd.createDirPath(fpath.parent_path().string()))
         return false;
@@ -127,7 +125,10 @@ string file::hashFileContent(string fpath){
 
 bool file::checkExistOrCreate(string fpath){
     if(!checkFileExist(fpath)){
-        return create(fpath)?1:(cout<<"Couldn\'t create file \n", 0);
+        if(!create(fpath)){
+            cout<<"Couldn\'t create file \n"; 
+            return false;
+        }
     }
     return true;
 }
@@ -150,7 +151,9 @@ uintmax_t file::fileSize(string fpath){
         std::cerr << e.what() << '\n';
         return uintmax_t(0);
     }
-    
+}
+bool file::clearFile(string path){
+    return writeInFile(path ,"",true);
 }
 
 file::file(){

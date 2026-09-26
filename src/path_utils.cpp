@@ -1,6 +1,7 @@
 #include "path_utils.h"
 #include "config.h"
 #include <filesystem>
+#include <iostream>
 #include <string>
 
 namespace fs = std::filesystem;
@@ -15,6 +16,16 @@ static void ensure_master(){
         else
             g_masterPath = fs::path(m);
     }
+}
+void path_utils::setMaster(string path){
+    std::string pth = config::getMasterPath(); 
+    if(!pth.empty())
+        g_masterPath = fs::path(path);
+    else
+        g_masterPath = pth;
+}
+std::string path_utils::getMaster(){
+    return g_masterPath.string();
 }
 
 std::string path_utils::stripMasterPrefix(const std::string &absPath){

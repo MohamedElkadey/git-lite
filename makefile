@@ -6,7 +6,8 @@ SRC_DIR = src
 BUILD_DIR = build
 
 CXXFLAGS = -Wall -Wextra -std=c++20 -MMD -MP 
-LDLIBS = -lcrypto -lz
+LDFLAGS += -L/home/linuxbrew/.linuxbrew/lib
+LDLIBS = -lcrypto -lz -lsqlite3
 # Find all cpp files
 SRC = $(shell find $(SRC_DIR) -name "*.cpp")
 
@@ -23,7 +24,7 @@ all: $(TARGET)
 
 # Link object files
 $(TARGET): $(OBJ)
-	$(CXX) $(OBJ) -o $@ $(LDLIBS)
+	$(CXX) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS) 
 
 
 # Compile cpp -> object

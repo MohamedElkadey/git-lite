@@ -22,16 +22,16 @@ string config::getMasterPath(){
         return g_masterPath;
     if(!g_configPath.empty()){
         configFile.load(g_configPath);
-        return getValue( "MySection","MyString");
+        return getValue( "settings","master");
     }
     return "";
 }   
 
 bool config::setMasterPath(const string &masterPath){
     g_masterPath = masterPath;
-    setConfig("settings" , "master" ,g_masterPath );
+    return setConfig("settings" , "master" ,g_masterPath );
 }
-string getValue(string cluster , string prameter){
+string config::getValue(string cluster , string prameter){
     configFile.load(g_configPath);
         return configFile[cluster][prameter].as<string>();
 }
@@ -65,6 +65,21 @@ bool config::setmultiValues(vector<string[3]> CKV ){
     {
         std::cerr << e.what() << '\n';
     }
-    return false;
+    return false;   
+}
+bool config::deletePrameter(string cluster , string prameter){
+    try
+    {
+        configFile.load(g_configPath.string());
+        configFile[cluster].erase(prameter);
+        configFile.save(g_configPath.string());
+        return true;    
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return false;
+    }
+    
     
 }

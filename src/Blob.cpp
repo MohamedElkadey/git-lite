@@ -44,7 +44,7 @@ string Blob::create(string filePath){
         return HashFile;
     }
     string pth = pathByHash(HashFile);
-    if(!fl.create(pth)){
+    if(!fl.checkExistOrCreate(pth)){
         return "";
     }
     myzlib zl;

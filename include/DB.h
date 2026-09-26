@@ -6,16 +6,12 @@ class DB
 private:
     /* data */
     string indexDB;
+    const char* indexSQL =
+        "CREATE TABLE IF NOT EXISTS tree (id TEXT(128) PRIMARY KEY , path TEXT NOT NULL);";
+
 public:
     DB(/* args */);
-    void setindexDB(string path);
+    bool setindexDB(string path);
+    bool clearIndexDB();
     ~DB();
 };
-
-DB::DB(/* args */)
-{
-}
-
-DB::~DB()
-{
-}

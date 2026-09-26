@@ -1,8 +1,7 @@
-#include <bits/stdc++.h>
+#include "lib.h"
 #include "gitstructure.h"
 #include "Blob.h"
-#include "file.h"
-#include "dir.h"
+#include "config.h"
 #include "myzlib.h"
 #include "inicpp.h"
 
@@ -22,7 +21,6 @@ int main(){
 cout<<"Hello\n";
     gitstructure gt ;
     gt.init();
-    
 
     auto end = std::chrono::high_resolution_clock::now();
 
