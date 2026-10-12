@@ -3,9 +3,9 @@
 #include "Blob.h"
 #include "config.h"
 #include "myzlib.h"
-#include "inicpp.h"
-
+#include "indexDB.h"
 using namespace std;
+
 
 
 int main(){
@@ -21,14 +21,13 @@ int main(){
 cout<<"Hello\n";
     gitstructure gt ;
     gt.init();
-
+    
     auto end = std::chrono::high_resolution_clock::now();
-
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+    
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
         end - start
     );
-    cout<<duration.count()<<"\n";
+    cout<<duration.count()<<" milliseconds"<<"\n";
     return 0;
 }
-
 

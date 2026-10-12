@@ -15,18 +15,15 @@ gitstructure::gitstructure(){
 
 }
 void gitstructure::init(){
-    cout<<this->path <<"---------\n";
-
     if (!dd.dirExist(getDir())) {
         dd.createDir(getDir());
     }
-    for( const auto& info : assets){
-
-        if (!checkasset(info)) {
-            createasset(info);
-            if(info.childrenCount){
-                for (size_t i = 0; i < info.childrenCount; ++i){
-                    auto child = info.children[i];
+    for( const auto& info : assetsMap){
+        if (!checkasset(info.second)) {
+            createasset(info.second);
+            if(info.second.childrenCount){
+                for (size_t i = 0; i < info.second.childrenCount; ++i){
+                    auto child = info.second.children[i];
                     createasset(child);
                 }
             }

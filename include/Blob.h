@@ -13,6 +13,6 @@ class Blob{
     string create(string filePath);
     string blobExistByHash(string hash);
     bool getFromBlob(string hash , string filePath  );
-    Blob(string);
+    Blob();
     ~Blob();
 };

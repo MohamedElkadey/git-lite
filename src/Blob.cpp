@@ -1,17 +1,15 @@
 #include "Blob.h"
-#include "file.h"
-#include "dir.h"
-#include <bits/stdc++.h>
+#include "lib.h"
+#include "asset.h"
 #include <openssl/evp.h>
 #include "myzlib.h"
 
 using namespace std;
 namespace fs = filesystem;
 
-Blob::Blob(string objectDir){
-    dir dd;
-    dd.createDir(objectDir);
-    this->blobDirPath = fs::path(objectDir);
+Blob::Blob(){
+    auto info = assetsMap.at(Asset::Blob);
+    this->blobDirPath = fs::path(getPath(info));
 }
 Blob::~Blob(){}
 /*
@@ -35,7 +33,6 @@ getFromBlob from hash
 
 
 string Blob::create(string filePath){
-    file fl;
     if(!fl.checkFileExist(filePath)){
         return "";
     }
@@ -64,7 +61,6 @@ string Blob::pathByHash(string hash){
 
 string Blob::blobExistByHash(string hash){
     string pth = pathByHash(hash);
-    file fl;
     if(fl.checkFileExist(pth))
         return pth;
     return "";

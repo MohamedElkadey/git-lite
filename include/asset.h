@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <string>
+#include "config.h"
 
 const std::string gtDir = ".gt";
 extern std::string rootDir;
@@ -15,7 +16,8 @@ enum class Asset : uint8_t {
     Tree,
     Index,
     Ignore,
-    Config
+    Config,
+    TreeDir
 };
 
 enum class AssetType : uint8_t {
@@ -29,7 +31,6 @@ struct AssetOps {
 };
 
 struct AssetInfo {
-    Asset asset;
     const char* name;
     const char* dotExtension;
     AssetType type;
@@ -41,6 +42,7 @@ struct AssetInfo {
 };
 
 
-extern const std::array<AssetInfo, 6> assets;
+extern const std::map<Asset,AssetInfo> assetsMap;
 
 void setRootPath(std::string& path);
+string getPath(AssetInfo asset);

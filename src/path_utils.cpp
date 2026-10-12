@@ -10,19 +10,11 @@ static fs::path g_masterPath;
 
 static void ensure_master(){
     if(g_masterPath.empty()){
-        std::string m = config::getMasterPath();
-        if(m.empty())
-            g_masterPath = fs::current_path();
-        else
-            g_masterPath = fs::path(m);
+        g_masterPath = fs::current_path();
     }
 }
 void path_utils::setMaster(string path){
-    std::string pth = config::getMasterPath(); 
-    if(!pth.empty())
-        g_masterPath = fs::path(path);
-    else
-        g_masterPath = pth;
+    g_masterPath = fs::path(path);
 }
 std::string path_utils::getMaster(){
     return g_masterPath.string();

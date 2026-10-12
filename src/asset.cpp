@@ -1,6 +1,7 @@
 #include "asset.h"
 #include "lib.h"
-#include "DB.h"
+#include "indexDB.h"
+#include <map>
 std::string rootDir;
 
 void setRootPath(string& path){
@@ -17,12 +18,8 @@ void setRootPath(string& path){
 
 
 const AssetInfo& getInfo(Asset asset) {
-    for(auto& info : assets ){
-        if(info.asset == asset){
-            return info;
-        }
-    }
-    throw runtime_error("Unknown asset");
+    AssetInfo info = assetsMap.at(asset);
+    return info;
 }
 
 string getPath(AssetInfo asset) {
@@ -41,12 +38,6 @@ void createConfig(const AssetInfo& config){
     if(!config::init(path)){
         cout << "Failed to init config: " << path << "\n";
         return ;
-    }
-    if(config::getMasterPath().empty()){
-        if(!config::setMasterPath(rootDir)){
-            cout << "Failed to set master path in config\n";
-            return ;
-        }
     }
     return ;
 }
@@ -72,8 +63,14 @@ bool validateIndex(const AssetInfo& asset){
 }
 
 void createIndex(const AssetInfo& asset){
-    DB db;
-    db.setindexDB(getPath(asset));
+    indexDB db;
+    db.setindexDB();
+}
+void creareIgnore(const AssetInfo& asset){
+    fl.create(getPath(asset));    
+}
+bool validateIgnore(const AssetInfo& asset){
+    return fl.checkFileExist(getPath(asset));
 }
 
 
@@ -96,6 +93,10 @@ const AssetOps IndexOps{
     validateIndex,
     createIndex
 };
+const AssetOps IgnoreOps{
+    validateIgnore,
+    creareIgnore
+};
 
 // ToDo 
 /*
@@ -103,11 +104,11 @@ crate tree DB AssetOps
 crate ignore AssetOps
 */
 
-const std::array<AssetInfo, 6> assets = {{
-    {Asset::Config, "Config", ".ini", AssetType::File, nullptr, 0,&ConfigOps},
-    {Asset::Blob,   "object", nullptr, AssetType::Directory, nullptr, 0,&objectOps},
-    {Asset::Tree,   "DB",     nullptr, AssetType::Directory, nullptr, 0,&DBOps},
-    {Asset::Index,  "index",  ".db", AssetType::File, nullptr, 0,&IndexOps },
-    {Asset::Tree,   "tree",   ".db", AssetType::File, nullptr, 0,nullptr},
-    {Asset::Ignore, "ignore", ".txt", AssetType::File, nullptr, 0,nullptr}
+const std::map<Asset,AssetInfo> assetsMap = {{
+    {Asset::Config, {"Config", ".ini", AssetType::File, nullptr, 0,&ConfigOps}},
+    {Asset::Blob,   {"object", nullptr, AssetType::Directory, nullptr, 0,&objectOps}},
+    {Asset::TreeDir,{"DB",     nullptr, AssetType::Directory, nullptr, 0,&DBOps}},
+    {Asset::Index,  {"index",  ".db", AssetType::File, nullptr, 0,&IndexOps} },
+    {Asset::Tree,   {"tree",   ".db", AssetType::File, nullptr, 0,nullptr}},
+    {Asset::Ignore, {"ignore", ".txt", AssetType::File, nullptr, 0,&IgnoreOps}}
 }};

@@ -16,21 +16,9 @@ bool config::init(const string &configPath){
     file fl;
     return fl.checkExistOrCreate(configPath);
 }
+ 
 
-string config::getMasterPath(){
-    if(!g_masterPath.empty())
-        return g_masterPath;
-    if(!g_configPath.empty()){
-        configFile.load(g_configPath);
-        return getValue( "settings","master");
-    }
-    return "";
-}   
 
-bool config::setMasterPath(const string &masterPath){
-    g_masterPath = masterPath;
-    return setConfig("settings" , "master" ,g_masterPath );
-}
 string config::getValue(string cluster , string prameter){
     configFile.load(g_configPath);
         return configFile[cluster][prameter].as<string>();
